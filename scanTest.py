@@ -1,5 +1,5 @@
 # Replace <Subscription Key> with your valid subscription key.
-subscription_key = "<Subscription Key>"
+subscription_key = "<60381a3a36a64b8890dc25c1ea63a5e4>"
 assert subscription_key
 
 # You must use the same region in your REST call as you used to get your
@@ -18,7 +18,7 @@ image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/" + \
     "Atomist_quote_from_Democritus.png/338px-Atomist_quote_from_Democritus.png"
 
 import requests
-headers  = {'047730c7a3334a2ea23fc113d2c611fa': subscription_key}
+headers  = {'60381a3a36a64b8890dc25c1ea63a5e4': subscription_key}
 params   = {'language': 'unk', 'detectOrientation': 'true'}
 data     = {'url': image_url}
 response = requests.post(ocr_url, headers=headers, params=params, json=data)
