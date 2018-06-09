@@ -1,5 +1,5 @@
 # Replace <Subscription Key> with your valid subscription key.
-subscription_key = "<60381a3a36a64b8890dc25c1ea63a5e4>"
+subscription_key = "<Subscription Key>"
 assert subscription_key
 
 # You must use the same region in your REST call as you used to get your
@@ -11,45 +11,55 @@ assert subscription_key
 # this region.
 vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/"
 
-ocr_url = vision_base_url + "ocr"
+text_recognition_url = vision_base_url + "recognizeText"
 
 # Set image_url to the URL of an image that you want to analyze.
-image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/" + \
-    "Atomist_quote_from_Democritus.png/338px-Atomist_quote_from_Democritus.png"
+image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/" + \
+    "Cursive_Writing_on_Notebook_paper.jpg/800px-Cursive_Writing_on_Notebook_paper.jpg"
 
 import requests
-headers  = {'60381a3a36a64b8890dc25c1ea63a5e4': subscription_key}
-params   = {'language': 'unk', 'detectOrientation': 'true'}
+headers  = {'Ocp-Apim-Subscription-Key': subscription_key}
+# Note: The request parameter changed for APIv2.
+# For APIv1, it is 'handwriting': 'true'.
+params   = {'mode': 'Handwritten'}
 data     = {'url': image_url}
-response = requests.post(ocr_url, headers=headers, params=params, json=data)
+response = requests.post(
+    text_recognition_url, headers=headers, params=params, json=data)
 response.raise_for_status()
 
-analysis = response.json()
+# Extracting handwritten text requires two API calls: One call to submit the
+# image for processing, the other to retrieve the text found in the image.
 
-# Extract the word bounding boxes and text.
-line_infos = [region["lines"] for region in analysis["regions"]]
-word_infos = []
-for line in line_infos:
-    for word_metadata in line:
-        for word_info in word_metadata["words"]:
-            word_infos.append(word_info)
-word_infos
+# Holds the URI used to retrieve the recognized text.
+operation_url = response.headers["Operation-Location"]
+
+# The recognized text isn't immediately available, so poll to wait for completion.
+import time
+analysis = {}
+while "recognitionResult" not in analysis:
+    response_final = requests.get(
+        response.headers["Operation-Location"], headers=headers)
+    analysis = response_final.json()
+    time.sleep(1)
+
+# Extract the recognized text, with bounding boxes.
+polygons = [(line["boundingBox"], line["text"])
+    for line in analysis["recognitionResult"]["lines"]]
 
 # Display the image and overlay it with the extracted text.
-# If you are using a Jupyter notebook, uncomment the following line.
-#%matplotlib inline
+from matplotlib.patches import Polygon
 from PIL import Image
 from io import BytesIO
-from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
-plt.figure(figsize=(5, 5))
-image = Image.open(BytesIO(requests.get(image_url).content))
-ax = plt.imshow(image, alpha=0.5)
-for word in word_infos:
-    bbox = [int(num) for num in word["boundingBox"].split(",")]
-    text = word["text"]
-    origin = (bbox[0], bbox[1])
-    patch  = Rectangle(origin, bbox[2], bbox[3], fill=False, linewidth=2, color='y')
+
+plt.figure(figsize=(15, 15))
+image  = Image.open(BytesIO(requests.get(image_url).content))
+ax     = plt.imshow(image)
+for polygon in polygons:
+    vertices = [(polygon[0][i], polygon[0][i+1])
+        for i in range(0, len(polygon[0]), 2)]
+    text     = polygon[1]
+    patch    = Polygon(vertices, closed=True, fill=False, linewidth=2, color='y')
     ax.axes.add_patch(patch)
-    plt.text(origin[0], origin[1], text, fontsize=20, weight="bold", va="top")
-plt.axis("off")
+    plt.text(vertices[0][0], vertices[0][1], text, fontsize=20, va="top")
+_ = plt.axis("off")
