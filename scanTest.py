@@ -9,7 +9,7 @@ assert subscription_key
 # Free trial subscription keys are generated in the westcentralus region.
 # If you use a free trial subscription key, you shouldn't need to change
 # this region.
-vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/"
+vision_base_url = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/"
 
 text_recognition_url = vision_base_url + "recognizeText"
 
