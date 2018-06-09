@@ -1,5 +1,5 @@
 # Replace <Subscription Key> with your valid subscription key.
-subscription_key = "<Subscription Key>"
+subscription_key = "047730c7a3334a2ea23fc113d2c611fa"
 assert subscription_key
 
 # You must use the same region in your REST call as you used to get your
