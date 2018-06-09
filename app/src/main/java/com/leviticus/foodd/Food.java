@@ -1,13 +1,13 @@
 package com.leviticus.foodd;
 
 public class Food {
-    private static int counter;
+    private static int counter = 0;
     private String name;
     private ExpirationDate exp;
 
-    public Food(String name, ExpirationDate exp) {
+    public Food(String foodName, ExpirationDate exp) {
         counter++;
-        this.name = name;
+        this.name = foodName + counter;
         this.exp = exp;
     }
 
