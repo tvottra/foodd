@@ -18,7 +18,8 @@ public class ExpiryScanner extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setLoadWithOverviewMode(true);
         webview.getSettings().setUseWideViewPort(true);
-        webview.loadUrl("https://cesion.us/someshit.html");
+        webview.getSettings().setDomStorageEnabled(true);
+        webview.loadUrl("file:///android_asset/OCR2.html");
 
 
 
