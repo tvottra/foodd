@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">foodd</string>
+    <string name="app_name">Foodd: Limit Food Waste</string>
+    <string name="scan_food">Scan Food</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <string name="scan_expiry">Scan Expiry</string>
+    <string name="view_inventory">View Inventory</string>
+    <string name="calendar">Calendar</string>
+    <string name="recipies">Recipies</string>
+    <string name="title_activity_food_expiry">FoodExpiry</string>
 </resources>

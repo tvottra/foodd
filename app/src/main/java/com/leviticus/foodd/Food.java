@@ -1,9 +1,16 @@
 package com.leviticus.foodd;
 
-public class Food {
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+
+
+ public class Food {
     private static int counter = 0;
     private String name;
     private ExpirationDate exp;
+
+
 
     public Food(String foodName, ExpirationDate exp) {
         counter++;
