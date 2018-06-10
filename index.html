@@ -6,11 +6,6 @@
 </head>
 <body>
 
- <form action="/action_page.php">
-  <input type="file" name="pic" accept="image/*">
-  <input type="submit">
-</form>
-
 <script type="text/javascript">
     function processImage() {
         // **********************************************
@@ -79,12 +74,8 @@ Enter the URL to an image of printed text, then
 click the <strong>Read image</strong> button.
 <br><br>
 Image to read:
-<form action="/action_page.php">
-  <input type="file" name="inputImage" accept="image/*">
-  <input type="submit">
-</form>
-    <input type="file" name="inputImage" id="inputImage" 
-    value="inputImage" />
+<input type="text" name="inputImage" id="inputImage" 
+    value="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Atomist_quote_from_Democritus.png/338px-Atomist_quote_from_Democritus.png" />
 <button onclick="processImage()">Read image</button>
 <br><br>
 <div id="wrapper" style="width:1020px; display:table;">
